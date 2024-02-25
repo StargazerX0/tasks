@@ -6,18 +6,16 @@ import se.edu.streamdemo.task.Task;
 
 import java.util.ArrayList;
 
+import static java.util.stream.Collectors.toList;
+
 public class Main {
     public static void main(String[] args) {
         System.out.println("Welcome to Task (stream) manager");
         DataManager dataManager = new DataManager("./data/data.txt");
         ArrayList<Task> tasksData = dataManager.loadData();
+        ArrayList<Task> filteredList = filterByString(tasksData, "11");
+        printAllData(filteredList);
 
-//        System.out.println("Printing all data ...");
-//        printAllData(tasksData);
-////        printAllDataUsingStream(tasksData);
-//        System.out.println("Printing deadlines ...");
-//        printDeadlines(tasksData);
-//        printDeadlinesUsingStream(tasksData);
 
         System.out.println("Total number of deadlines: " + countDeadlines(tasksData));
         System.out.println("Total number of deadlines: " + countDeadlinesUsingStream(tasksData));
@@ -72,4 +70,11 @@ public class Main {
             .forEach(System.out::println);
     }
 
+    public static ArrayList<Task> filterByString(ArrayList<Task> tasks, String filterString) {
+        ArrayList<Task> filteredList = (ArrayList<Task>) tasks.stream()
+            .filter((t) -> t.getDescription().contains(filterString))
+            .collect(toList());
+
+        return filteredList;
+    }
 }
